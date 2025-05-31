@@ -1,0 +1,131 @@
+<div class="artist-detail-container" *ngIf="artist">
+  <div class="artist-header">
+    <div class="artist-header-overlay"></div>
+    <div class="container">
+      <div class="artist-header-content">
+        <div class="back-link">
+          <a routerLink="/artists">← Back to Artists</a>
+        </div>
+        <div class="artist-info">
+          <h1 class="artist-name">{{ artist.name }}</h1>
+          <div class="artist-meta">
+            <span class="artist-genre">{{ artist.genre }}</span>
+            <span class="artist-location">{{ artist.location }}</span>
+            <div class="artist-rating">
+              <div class="rating-stars">
+                <span class="star" *ngFor="let star of getStars(artist.rating)">★</span>
+              </div>
+              <span class="rating-value">{{ artist.rating.toFixed(1) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="artist-content">
+      <div class="artist-main">
+        <div class="artist-gallery">
+          <img [src]="artist.image" [alt]="artist.name" class="artist-main-image">
+          <div class="image-grid">
+            <img *ngFor="let img of additionalImages" [src]="img" [alt]="artist.name + ' performance'" class="gallery-image">
+          </div>
+        </div>
+        
+        <section class="artist-section">
+          <h2 class="section-title">About</h2>
+          <p class="artist-description">{{ artistLongDescription }}</p>
+        </section>
+        
+        <section class="artist-section">
+          <h2 class="section-title">Services</h2>
+          <ul class="services-list">
+            <li *ngFor="let service of services" class="service-item">
+              <h3 class="service-title">{{ service.title }}</h3>
+              <p class="service-description">{{ service.description }}</p>
+              <div class="service-price">{{ service.price | currency }}</div>
+            </li>
+          </ul>
+        </section>
+        
+        <section class="artist-section">
+          <h2 class="section-title">Reviews</h2>
+          <div class="reviews-container">
+            <div *ngFor="let review of reviews" class="review-card">
+              <div class="review-header">
+                <img [src]="review.userImage" [alt]="review.userName" class="reviewer-image">
+                <div class="reviewer-info">
+                  <div class="reviewer-name">{{ review.userName }}</div>
+                  <div class="review-date">{{ review.date }}</div>
+                </div>
+                <div class="review-rating">
+                  <span class="star" *ngFor="let star of getStars(review.rating)">★</span>
+                </div>
+              </div>
+              <p class="review-text">{{ review.text }}</p>
+            </div>
+          </div>
+        </section>
+      </div>
+      
+      <aside class="booking-sidebar">
+        <div class="booking-card">
+          <h2 class="booking-title">Book This Artist</h2>
+          <div class="booking-price">
+            <span class="price-value">{{ artist.price | currency }}</span>
+            <span class="price-unit">per event</span>
+          </div>
+          
+          <form class="booking-form">
+            <div class="form-group">
+              <label for="eventDate">Event Date</label>
+              <input type="date" id="eventDate" class="form-control" [(ngModel)]="bookingData.date" name="date">
+            </div>
+            
+            <div class="form-group">
+              <label for="eventTime">Start Time</label>
+              <input type="time" id="eventTime" class="form-control" [(ngModel)]="bookingData.time" name="time">
+            </div>
+            
+            <div class="form-group">
+              <label for="eventDuration">Duration (hours)</label>
+              <select id="eventDuration" class="form-control" [(ngModel)]="bookingData.duration" name="duration">
+                <option value="1">1 hour</option>
+                <option value="2">2 hours</option>
+                <option value="3">3 hours</option>
+                <option value="4">4 hours</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="eventVenue">Venue/Location</label>
+              <input type="text" id="eventVenue" class="form-control" [(ngModel)]="bookingData.venue" name="venue">
+            </div>
+            
+            <div class="form-group">
+              <label for="eventNotes">Special Requests</label>
+              <textarea id="eventNotes" rows="3" class="form-control" [(ngModel)]="bookingData.notes" name="notes"></textarea>
+            </div>
+            
+            <button type="button" class="btn-primary booking-btn" (click)="submitBookingRequest()">
+              Request Booking
+            </button>
+          </form>
+          
+          <div class="booking-info">
+            <p>No payment required until booking is confirmed by the artist.</p>
+            <p>Free cancellation up to 7 days before the event.</p>
+          </div>
+        </div>
+        
+        <div class="contact-card">
+          <h3 class="contact-title">Need more information?</h3>
+          <button class="btn-outline contact-btn">
+            Contact Artist
+          </button>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
